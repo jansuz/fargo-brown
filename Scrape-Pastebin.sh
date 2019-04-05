@@ -34,7 +34,7 @@ while [ 1 == 1 ];
 		sed 's/[,"]//g' >> tmp.scrape
 
 	#Parse
-  ParseResults &
+  	ParseResults &
 
 	# Sleep
 	echo "Sleeping 3..." && sleep 60
