@@ -11,7 +11,7 @@ while read line;
   sScrape=$(echo $line | cut -d'=' -f2)
   curl --silent $line --output $sScrape
   sResult=$(grep --ignore-case -e $sSearch $sScrape)
-  if [ ${#sResult}==0 ]; then
+  if [ ${#sResult} = 0 ]; then
     # echo -e \"$sSearch\"" not found in "$sScrape"."
     # Note the "" after -i, needed in OS X
     sed -i "" "/${sScrape}/d" $sFilename
