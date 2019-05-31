@@ -1,7 +1,5 @@
 #!/bin/bash
 
-iNUM=250
-
 ParseResults () {
 
 sSearch="une.edu.au"
@@ -16,15 +14,15 @@ while read line;
   curl --silent $line --output $sScrape
 
   if grep -q -e "^Please slow down" $sScrape; then
-    let iNUM=iNUM-1
-	if [ $iNUM -lt 101 ]; then
-	    let iNUM=100;
+    let INUM=INUM-1
+	if [ $INUM -lt 101 ]; then
+	    let INUM=100;
     	fi
-    echo "Decreasing to "$iNUM"."
-    rm $sScrape
+    echo "Decreasing to "$INUM"."
+    sed -i  "/${sScrape}/d" $sFilename
   else
-    head -n 2 $sScrape
-    printf "\n~ "$sScrape" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*\n"
+    # head -n 2 $sScrape
+    # printf "\n~ "$sScrape" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*\n"
 
     sResult=$(grep --ignore-case -e $sSearch $sScrape)
     # echo 1.$sSearch,2.$sResult,3.$sScrape,4.${#sResult}
@@ -34,11 +32,11 @@ while read line;
       # echo -e \"$sSearch\"" found in "$sScrape"."
       echo $(date +"%Y%m%d%H%M%S"), $sScrape >> found.scrape
     fi
-    if [ $iNUM -gt 249 ]; then
-      let iNUM=250;
+    if [ $INUM -gt 249 ]; then
+      let INUM=250;
     else
-      let iNUM=iNUM+1
-      echo "Increasing to "$iNUM"."
+      let INUM=INUM+1
+      echo "Increasing to "$INUM"."
     fi
     rm $sScrape
   fi
@@ -48,9 +46,12 @@ while read line;
 while [ 1 == 1 ];
 	do
 	# Scrape
+        if [ $INUM==0 ]; then
+          let INUM=250;
+	fi
         echo "Scraping at "$(date +"%H:%M:%S")"..."
-	echo "Fetching "$iNUM" records."
-	sFullScrape=$(curl --silent https://scrape.pastebin.com/api_scraping.php?limit=$iNUM)
+	echo "Fetching "$INUM" records."
+	sFullScrape=$(curl --silent https://scrape.pastebin.com/api_scraping.php?limit=$INUM)
 		echo $sFullScrape |
 		sed -e 's/{/\n{/g' |
 		grep scrape_url | \
