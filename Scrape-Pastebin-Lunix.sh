@@ -49,6 +49,7 @@ while [ 1 == 1 ];
 	do
 	# Scrape
         echo "Scraping at "$(date +"%H:%M:%S")"..."
+	echo "Fetching "$iNUM" records."
 	sFullScrape=$(curl --silent https://scrape.pastebin.com/api_scraping.php?limit=$iNUM)
 		echo $sFullScrape |
 		sed -e 's/{/\n{/g' |
